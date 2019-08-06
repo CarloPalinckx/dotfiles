@@ -1,0 +1,35 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+#	name = carlo palinckx
+#	email = carlopalinckx@MacBook-Pro-van-carlo.local
+[rerere]
+	enabled = true
+[pull]
+	rebase = true
+	default = current
+[user]
+	name = Carlo Palinckx
+	email = carlo@mijnwebwinkel.nl
+[rebase]
+	autosquash = false
+[core]
+	editor = vim
+[alias]
+	c = !git add . && git commit -m
+	ca = !git add . && git commit --amend
+	cf = !git add . && git commit --fixup
+	l = log --graph --all --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
+	s = status
+	f = fetch
+	psu = !git push --set-upstream origin
+	ri = !git fetch && git rebase -i
+        rh = !git reset --hard
+        rhc = !git reset --hard && git clean -fd
+	cleanup = !git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D && git prune
+        lsha = !git log --pretty=format:'%h' -n 1
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
