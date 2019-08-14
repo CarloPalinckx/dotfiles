@@ -29,6 +29,7 @@ Plug 'prettier/vim-prettier', {
   \ 'branch': 'release/1.x',
   \ }
 Plug 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
@@ -172,6 +173,13 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+"=== Git gutter ===
+
+let g:gitgutter_sign_added = '█'
+let g:gitgutter_sign_modified = '█'
+let g:gitgutter_sign_removed = '█'
+let g:gitgutter_sign_modified_removed = '█'
 
 "=== Functions === 
 
