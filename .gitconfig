@@ -28,6 +28,10 @@
     rhc = !git reset --hard && git clean -fd
 	cleanup = !git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D && git prune
     lsha = !git log --pretty=format:'%h' -n 1
+    d = !git diff origin/master HEAD
+    ds = !git diff origin/master HEAD --stat
+	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

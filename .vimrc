@@ -8,6 +8,7 @@ Plug 'jparise/vim-graphql'
 Plug 'pangloss/vim-javascript'
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'evidens/vim-twig'
 
 " === Theme plugins === 
 Plug 'arcticicestudio/nord-vim'
@@ -28,8 +29,9 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'branch': 'release/1.x',
   \ }
-Plug 'ryanoasis/vim-devicons'
+Plug 'farmergreg/vim-lastplace'
 Plug 'airblade/vim-gitgutter'
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
