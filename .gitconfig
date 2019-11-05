@@ -22,11 +22,11 @@
 	l = log --graph --all --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
 	s = status
 	f = fetch
-	psu = !git push --set-upstream origin
+	psu = !git push --set-upstream origin HEAD
 	ri = !git fetch && git rebase -i
     rh = !git reset --hard
     rhc = !git reset --hard && git clean -fd
-	cleanup = !git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D && git prune
+	cleanup = !git gc && git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D && git prune
     lsha = !git log --pretty=format:'%h' -n 1
     d = !git diff origin/master HEAD
     ds = !git diff origin/master HEAD --stat
