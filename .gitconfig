@@ -14,7 +14,7 @@
 [rebase]
 	autosquash = false
 [core]
-	editor = vim
+	editor = nvim
 [alias]
 	c = !git add . && git commit -m
 	ca = !git add . && git commit --amend
