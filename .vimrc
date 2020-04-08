@@ -55,6 +55,16 @@
     Plug 'ryanoasis/vim-devicons'  
     " Tmux window manager
     Plug 'christoomey/vim-tmux-navigator'
+    " Fuzzy file finder
+    Plug 'wincent/command-t', {
+    \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
+    \ }
+    " Adds a fancy start screen
+    Plug 'mhinz/vim-startify'
+    " Adds graphql language support
+    Plug 'jparise/vim-graphql'
+    " Adds a nice gutter thats shows what line changed
+    Plug 'airblade/vim-gitgutter'
 
     call plug#end()
 
@@ -97,11 +107,17 @@
     let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
     let g:airline#extensions#wordcount#enabled = 0   
 
-
     " Adds different icons to NERDTree
     let g:NERDTreeDirArrowExpandable = ' '
     let g:NERDTreeDirArrowCollapsible = ' '
     let g:NERDTreeStatusline = ''
+    let g:NERDTreeWinSize=80
+
+    " Adds a VSCode like git gutter
+    let g:gitgutter_sign_added = '█'
+    let g:gitgutter_sign_modified = '█'
+    let g:gitgutter_sign_removed = '█'
+    let g:gitgutter_sign_modified_removed = '█'
 
 "   _____                                    _   _____          _   _             
 "  / ____|                                  | | |  __ \        | | (_)            
@@ -232,6 +248,10 @@
     nnoremap <silent> {¬} :TmuxNavigateRight<cr>
     nnoremap <silent> {c-\} :TmuxNavigatePrevious<cr>
 
+    " ignore node_modules from navigation
+    set wildignore+=*/node_modules/*  
+    " Open Command T with Ctrl-O (lol)
+    map <C-o> :CommandT<CR>
 
 " ----------------------------------------------------------------------------------------
 " ----------------------------------------------------------------------------------------
