@@ -33,8 +33,6 @@
 
     call plug#begin()
 
-    " Nord color scheme
-    Plug 'arcticicestudio/nord-vim'
     " Syntax highlighting for typescript
     Plug 'leafgarland/typescript-vim'
     " Syntax highlighting for typescript with JSX
@@ -53,21 +51,20 @@
     Plug 'scrooloose/nerdtree' 
     " Adds icons to the file explorer
     Plug 'ryanoasis/vim-devicons'  
-    " Tmux window manager
-    Plug 'christoomey/vim-tmux-navigator'
     " Fuzzy file finder
     Plug 'wincent/command-t', {
     \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
     \ }
-    " Adds a fancy start screen
-    Plug 'mhinz/vim-startify'
     " Adds graphql language support
     Plug 'jparise/vim-graphql'
     " Adds a nice gutter thats shows what line changed
     Plug 'airblade/vim-gitgutter'
+    " Adds the night-owl theme    
+    Plug 'haishanh/night-owl.vim'
+    " Tmux navigator for vim
+    Plug 'christoomey/vim-tmux-navigator'
 
     call plug#end()
-
 
 "  _____       _             __               
 " |_   _|     | |           / _|              
@@ -77,14 +74,14 @@
 " |_____|_| |_|\__\___|_|  |_| \__,_|\___\___|
 " ----------------------------------------------------------------------------------------
 
+    " Set vim background to equal terminal background
+    set t_Co=256
+    set background=dark
+    set termguicolors
     " Enable syntax highlighting
     syntax enable
-    " Sets active color scheme to Nord
-    colorscheme nord
-    " Sets the editor font to fira
-    set guifont=Fira\ Code\ Nerd\ Font
-    " Enables vim's default dark background for fallback colors
-    set background=dark
+    " Sets active color scheme to Night owl 
+    colorscheme night-owl 
     " Enable line numbers
     set number
     " Increase the width of the line number gutter
@@ -95,9 +92,19 @@
     highlight clear SignColumn
     " Set encoding for icons
     set encoding=UTF-8 
-     " Add different styling to airline
-    let g:airline_left_sep = ' ☘ ' 
-    let g:airline_right_sep = ' ★ '
+    " Adds missing tsx highlighting
+    hi tsxCloseTag guifg=#21c7a8 guibg=NONE gui=italic
+    hi tsxCloseTagName guifg=#82aaff guibg=NONE gui=italic
+    hi tsxTag guifg=#21c7a8 guibg=NONE gui=italic
+    hi tsxTagName guifg=#82aaff guibg=NONE gui=italic
+    hi tsxAttrib guifg=#82aaff guibg=NONE gui=italic
+    hi tsGenerics guifg=#82aaff guibg=NONE gui=italic
+    hi tsxTypes guifg=#82aaff guibg=NONE gui=italic
+    hi MatchParen guifg=NONE guibg=NONE gui=bold
+
+    " Add different styling to airline
+    let g:airline_left_sep = ' λ ' 
+    let g:airline_right_sep = ''
     let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
     let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
     let g:airline_highlighting_cache = 1
@@ -218,6 +225,8 @@
 "                      |___/                         
 " ----------------------------------------------------------------------------------------
 
+    " Show hidden files in NERDTree
+    let NERDTreeShowHidden=1
     let NERDTreeQuitOnOpen=1
 
     " Automatically close NERDTree when opening a file (disabled)
@@ -248,10 +257,34 @@
     nnoremap <silent> {¬} :TmuxNavigateRight<cr>
     nnoremap <silent> {c-\} :TmuxNavigatePrevious<cr>
 
+    " Ignore files in NERDTree
+    let NERDTreeIgnore=['\.DS_Store$', '\.git$'] 
     " ignore node_modules from navigation
-    set wildignore+=*/node_modules/*  
+    
+    set wildignore+=*/node_modules/*,*/dist/*,*/reports/*
     " Open Command T with Ctrl-O (lol)
     map <C-o> :CommandT<CR>
 
+    " Make sure ctrlp keeps the ancestor with a .git dir as cwd
+    let g:ctrlp_working_path_mode = 'r'
+
+"  __  __ _          
+" |  \/  (_)         
+" | \  / |_ ___  ___ 
+" | |\/| | / __|/ __|
+" | |  | | \__ \ (__ 
+" |_|  |_|_|___/\___|
 " ----------------------------------------------------------------------------------------
-" ----------------------------------------------------------------------------------------
+
+" Show highlight group under cursor
+function! SynStack ()
+    for i1 in synstack(line("."), col("."))
+        let i2 = synIDtrans(i1)
+        let n1 = synIDattr(i1, "name")
+        let n2 = synIDattr(i2, "name")
+        echo n1 "->" n2
+    endfor
+endfunction
+
+map gm :call SynStack()<CR>
+
