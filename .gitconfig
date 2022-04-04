@@ -23,6 +23,7 @@
 	s = status
 	f = fetch
 	psu = !git push --set-upstream origin HEAD
+	pf = !git push --force-with-lease 
 	ri = !git fetch && git rebase -i
     rh = !git reset --hard
     rhc = !git reset --hard && git clean -fd

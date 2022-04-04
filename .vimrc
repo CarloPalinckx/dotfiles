@@ -33,12 +33,14 @@
 
     call plug#begin()
 
-    " Syntax highlighting for typescript
-    Plug 'leafgarland/typescript-vim'
-    " Syntax highlighting for typescript with JSX
-    Plug 'peitalin/vim-jsx-typescript'
     " Typescript language server
     Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() } }
+    " Typescript syntax highlighting 
+    Plug 'herringtondarkholme/yats.vim'
+    " Javascript syntax highlighting 
+    Plug 'othree/yajs.vim'
+    " Twig syntax highlighting
+    Plug 'nelsyeung/twig.vim'
     " Comment lines in visual mode with 'gc'
     Plug 'tpope/vim-commentary'
     " Airline status bar
@@ -59,10 +61,15 @@
     Plug 'jparise/vim-graphql'
     " Adds a nice gutter thats shows what line changed
     Plug 'airblade/vim-gitgutter'
-    " Adds the night-owl theme    
-    Plug 'haishanh/night-owl.vim'
     " Tmux navigator for vim
     Plug 'christoomey/vim-tmux-navigator'
+    " Adds ack support for better 'find in files'
+    Plug 'mileszs/ack.vim'
+    " My favorite themes    
+    Plug 'haishanh/night-owl.vim'
+    Plug 'dracula/vim', { 'as': 'dracula' }
+    " Svelte syntax
+    Plug 'evanleck/vim-svelte'
 
     call plug#end()
 
@@ -78,15 +85,15 @@
     set t_Co=256
     set background=dark
     set termguicolors
+
     " Enable syntax highlighting
     syntax enable
-    " Sets active color scheme to Night owl 
-    colorscheme night-owl 
+    " Sets active color scheme 
+    colorscheme dracula 
     " Enable line numbers
     set number
     " Increase the width of the line number gutter
     set numberwidth=3
-    " User line numbers relative to cursor position for easier navigation
     set relativenumber
     " Make gutter background transparent 
     highlight clear SignColumn
@@ -101,18 +108,18 @@
     hi tsGenerics guifg=#82aaff guibg=NONE gui=italic
     hi tsxTypes guifg=#82aaff guibg=NONE gui=italic
     hi MatchParen guifg=NONE guibg=NONE gui=bold
+    hi NERDTreeOpenable guifg=NONE guibg=NONE gui=NONE
 
     " Add different styling to airline
     let g:airline_left_sep = ' λ ' 
     let g:airline_right_sep = ''
-    let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-    let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-    let g:airline_highlighting_cache = 1
-    let g:airline_section_z=" "
-    let g:airline_skip_empty_sections = 1
-    let g:airline#extensions#wordcount#format = ''
-    let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-    let g:airline#extensions#wordcount#enabled = 0   
+    let g:airline_theme = 'dracula'
+    let g:airline#extensions#tabline#enabled = 0 
+    let g:airline#extensions#branch#enabled = 1 
+    let g:airline_section_warning = '' 
+    let g:airline_section_y = '' 
+    let g:airline_section_x = '' 
+    set laststatus=2 " for airline
 
     " Adds different icons to NERDTree
     let g:NERDTreeDirArrowExpandable = ' '
@@ -141,6 +148,12 @@
     " Disable swapfiles, they wreak more havoc on git commits than they do good
     set noswapfile 
 
+    " Delete without yanking
+    nnoremap <leader>d "_d
+    vnoremap <leader>d "_d
+
+    " Replace currently selected text with default register without yanking it
+    vnoremap <leader>p "_dP
 
 "  ______                         _   _   _             
 " |  ____|                       | | | | (_)            
@@ -172,7 +185,7 @@
     let g:prettier#autoformat=0
 
     " Run prettier async before saving
-    autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.json,*.graphql,*.md PrettierAsync
+    autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.json,*.graphql,*.md,*.svelte PrettierAsync
     autocmd BufWritePre .babelrc,.eslintrc,.prettierrc PrettierAsync
 
 "   _____                     _     _             
@@ -191,6 +204,14 @@
     " Visually highlight search hits
     set hlsearch
 
+    " Configure Ack to show a list of files instead of opening the first hit 
+    cnoreabbrev Ack Ack!
+    nnoremap <Leader>a :Ack!<Space>
+
+    " Enable silver searcher for ack.vim
+    if executable('ag')
+        let g:ackprg = 'ag --nogroup --nocolor --column'
+    endif
 
 "  _                                                                                 _   
 " | |                                                                               | |  
@@ -202,8 +223,6 @@
 "                    |___/             |___/                 |_|   |_|                   
 " ----------------------------------------------------------------------------------------
 
-    " Set filetypes as typescript.tsx
-    autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
     " K to show typescript documentation in a preview window
     nnoremap <silent> K :call <SID>show_documentation()<CR>
 
@@ -244,29 +263,19 @@
     map <C-e> :NERDTreeToggle<CR>
 
     " Set working directory to open buffer
-    autocmd BufEnter * lcd %:p:h 
+    " autocmd BufEnter * lcd %:p:h 
 
     set laststatus=2
 
-    " Disable default tmux mapping
-    let g:tmux_navigator_no_mappings = 1
-
-    nnoremap <silent> {˙} :TmuxNavigateLeft<cr>
-    nnoremap <silent> {∆} :TmuxNavigateDown<cr>
-    nnoremap <silent> {˚} :TmuxNavigateUp<cr>
-    nnoremap <silent> {¬} :TmuxNavigateRight<cr>
-    nnoremap <silent> {c-\} :TmuxNavigatePrevious<cr>
-
     " Ignore files in NERDTree
     let NERDTreeIgnore=['\.DS_Store$', '\.git$'] 
-    " ignore node_modules from navigation
-    
-    set wildignore+=*/node_modules/*,*/dist/*,*/reports/*
+    " ignore node_modules from navigation    
+    set wildignore+=*/node_modules/*,*/dist/*,*/reports/*,*/.DS_Store
     " Open Command T with Ctrl-O (lol)
     map <C-o> :CommandT<CR>
 
-    " Make sure ctrlp keeps the ancestor with a .git dir as cwd
-    let g:ctrlp_working_path_mode = 'r'
+    " Increase max files for CommandT
+    let g:CommandTMaxFiles=2000000
 
 "  __  __ _          
 " |  \/  (_)         
