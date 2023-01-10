@@ -25,12 +25,12 @@
 	psu = !git push --set-upstream origin HEAD
 	pf = !git push --force-with-lease 
 	ri = !git fetch && git rebase -i
-    rh = !git reset --hard
-    rhc = !git reset --hard && git clean -fd
+        rh = !git reset --hard
+        rhc = !git reset --hard && git clean -fd
 	cleanup = !git gc && git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D && git prune
-    lsha = !git log --pretty=format:'%h' -n 1
-    d = !git diff origin/master HEAD
-    ds = !git diff origin/master HEAD --stat
+        lsha = !git log --pretty=format:'%h' -n 1
+        d = !git diff origin/master HEAD
+        ds = !git diff origin/master HEAD --stat
 	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
 
 [filter "lfs"]
