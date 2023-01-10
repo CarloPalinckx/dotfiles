@@ -10,7 +10,7 @@
 	default = current
 [user]
 	name = Carlo Palinckx
-	email = carlo@mijnwebwinkel.nl
+	email = carlopalinckx@gmail.nl
 [rebase]
 	autosquash = false
 [core]
