@@ -1,16 +1,12 @@
 # This is Git's per-user configuration file.
 [user]
-# Please adapt and uncomment the following lines:
-#	name = carlo palinckx
-#	email = carlopalinckx@MacBook-Pro-van-carlo.local
+	name = Carlo Palinckx
+	email = carlopalinckx@gmail.nl
 [rerere]
 	enabled = true
 [pull]
 	rebase = true
 	default = current
-[user]
-	name = Carlo Palinckx
-	email = carlopalinckx@gmail.nl
 [rebase]
 	autosquash = false
 [core]
